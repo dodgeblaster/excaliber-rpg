@@ -1,0 +1,16 @@
+name: Pipeline
+
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+
+jobs:
+    deploy-dev:
+        uses: ./.github/workflows/deploy-dev.yml
+        secrets: inherit
+    # deploy-prod:
+    #     uses: ./.github/workflows/deploy-prod.yml
+    #     needs: [ deploy-dev]
+    #     secrets: inherit

@@ -1,0 +1,10 @@
+name: Deploy Prod
+on: workflow_call
+
+jobs:
+    deploy-prod:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Placeholder
+              run: |
+                  echo Placeholder script

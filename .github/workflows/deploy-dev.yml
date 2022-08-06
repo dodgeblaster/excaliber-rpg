@@ -1,0 +1,18 @@
+name: Deploy Dev
+on: workflow_call
+
+jobs:
+    deploy-dev:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v3.4.1
+              with:
+                  node-version: 14.x
+            - name: Install
+              run: cd ./app && npm i && npm i -g rise-static
+            - name: Build
+              run: npm run build
+            - name: Deploy to Dev
+              run: rise-static deploy
