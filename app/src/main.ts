@@ -1,4 +1,4 @@
-import ex, { Engine, Actor, Color, CollisionType, vec, Input } from 'excalibur'
+import { Engine, Actor, Color, CollisionType, Input } from 'excalibur'
 const game = new Engine({
     width: 800,
     height: 600
@@ -27,7 +27,7 @@ class Player extends Actor {
         })
     }
 
-    public update = (engine: Engine, delta: number) => {
+    public update = (engine: Engine) => {
         this.vel.y = 0
         this.vel.x = 0
         const speed = 150
@@ -45,10 +45,6 @@ class Player extends Actor {
             this.vel.x = speed
         }
     }
-
-    onPostCollision(evt: ex.PostCollisionEvent) {
-        debugger
-    }
 }
 
 class Goal extends Actor {
@@ -62,10 +58,6 @@ class Goal extends Actor {
             x: 250,
             y: game.drawHeight - 40
         })
-    }
-
-    onPostCollision(evt: ex.PostCollisionEvent) {
-        debugger
     }
 }
 
