@@ -1,9 +1,20 @@
-import { Engine, Actor, Color, CollisionType, Input, vec } from 'excalibur'
+import {
+    Engine,
+    Actor,
+    Color,
+    CollisionType,
+    Input,
+    vec,
+    DisplayMode
+} from 'excalibur'
 const game = new Engine({
-    width: 800,
-    height: 600,
-    backgroundColor: Color.Black
+    width: 1600,
+    height: 900,
+    backgroundColor: Color.Black,
+    displayMode: DisplayMode.FitScreen
 })
+
+const UNIT = 32
 
 /**
  * Hero
@@ -12,13 +23,13 @@ const game = new Engine({
 class Player extends Actor {
     constructor() {
         super({
-            width: 20,
-            height: 20,
-            radius: 10,
+            width: UNIT,
+            height: UNIT,
+            radius: UNIT / 2,
             color: Color.Chartreuse,
             collisionType: CollisionType.Active,
-            x: 40,
-            y: 80
+            x: UNIT * 2,
+            y: UNIT * 4
         })
 
         this.on('collisionstart', (e) => {
@@ -28,21 +39,17 @@ class Player extends Actor {
         })
     }
 
-    public stopMoving() {
-        this.vel.y = 0
-        this.vel.x = 0
-    }
-    public moveRight() {
-        this.vel.x = 150
+    onInitialize(_engine: Engine): void {
+        _engine.currentScene.camera.strategy.radiusAroundActor(this, 200)
     }
 
     public update = (engine: Engine) => {
         this.vel.y = 0
         this.vel.x = 0
-        const speed = 150
+        const speed = UNIT * 8
         const isPressed = (x: Input.Keys) => engine.input.keyboard.isHeld(x)
         const isControllerPressed = (x: Input.Buttons) =>
-            engine.input.gamepads.at(1).isButtonPressed(x)
+            engine.input.gamepads.at(0).isButtonPressed(x)
 
         const CONTROLLER_UP =
             isPressed(Input.Keys.W) || isControllerPressed(Input.Buttons.DpadUp)
@@ -94,12 +101,13 @@ class Goal extends Actor {
     constructor() {
         super({
             name: 'goal',
-            width: 20,
-            height: 20,
+            width: UNIT,
+            height: UNIT,
             color: Color.Magenta,
             collisionType: CollisionType.Passive,
-            x: 30 * 20,
-            y: 9 * 20
+            x: 40 * UNIT,
+            y: 14 * UNIT,
+            anchor: vec(0, 0)
         })
     }
 }
@@ -108,8 +116,8 @@ class Roof extends Actor {
     constructor(x: number, y: number) {
         super({
             name: 'b' + x + y,
-            width: 20,
-            height: 20,
+            width: UNIT,
+            height: UNIT,
             color: Color.fromHex('#333330'),
             collisionType: CollisionType.Fixed,
             x: x,
@@ -123,8 +131,8 @@ class Wall extends Actor {
     constructor(x: number, y: number) {
         super({
             name: 'b' + x + y,
-            width: 20,
-            height: 20,
+            width: UNIT,
+            height: UNIT,
             color: Color.fromHex('#666660'),
             collisionType: CollisionType.Fixed,
 
@@ -138,8 +146,8 @@ class Ground extends Actor {
     constructor(x: number, y: number) {
         super({
             name: 'b' + x + y,
-            width: 20,
-            height: 20,
+            width: UNIT,
+            height: UNIT,
             color: Color.fromHex('#445566'),
             //collisionType: CollisionType.Fixed,
 
@@ -157,21 +165,21 @@ const def = [
     'x........x',
     'x........x',
     'xxxxx....x',
-    'xxxxx....xxxxxxxxxxxxxxxxxxxxxxxx',
-    'xwwww....wwwwwwwwwwwwwwwwwwwwwwwx',
-    'xwwww....wwwwwwwwwwwwwwwwwwwwwwwx',
-    'x...............................x',
-    'x...............................x',
-    'x...............................x',
-    'x...............................x',
-    'x...............................x',
-    'x...............................x',
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',
-    'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'
+    'xxxxx....xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    'xwwww....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx',
+    'xwwww....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx',
+    'x..............................................................x',
+    'x..............................................................x',
+    'x..............................................................x',
+    'x..............................................................x',
+    'x..............................................................x',
+    'x..............................................................x',
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..............................x',
+    'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx..............................x',
+    'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 ]
 
-const boxSize = 20
+const boxSize = UNIT
 let rowI = 0
 for (const row of def) {
     let blockI = 0
