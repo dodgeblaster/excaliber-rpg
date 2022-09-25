@@ -1,8 +1,11 @@
 /**
  * Code
  *
- * This ranbdom number generator comes from thefis stack overflow answer
+ * This ranbdom number generator comes from this stack overflow answer
  * https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript/47593316#47593316
+ * 
+ * This enable the caller to pass a seed number, which will reproduce the same random numbers. This is great for
+ * testing and for replaying a long sequence of random events
  */
 
 export function makeRandomGenerator(a?: number): () => number {
