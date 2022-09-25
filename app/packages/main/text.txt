@@ -1,0 +1,6 @@
+use lerna to make multiple packages
+have the excaluber pacakge (main one) be thin
+- have a types packages that everythign depends on
+- have a utils packages
+- have a "battle logic" package that knows nothing about excaluber, it just uses the types
+
